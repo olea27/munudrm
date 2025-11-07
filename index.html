@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Digital - Café & Bar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: #f7fafc;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 10px;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tab-button {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 24px;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #4a5568;
+        }
+
+        .tab-button:hover {
+            background: #edf2f7;
+            transform: translateY(-2px);
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .content {
+            padding: 30px 20px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #2d3748;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3em;
+        }
+
+        .menu-item-info {
+            padding: 20px;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+            flex: 1;
+        }
+
+        .menu-item-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #667eea;
+            margin-left: 10px;
+        }
+
+        .menu-item-description {
+            color: #718096;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .menu-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                padding: 5px;
+            }
+
+            .tab-button {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+
+            .section-title {
+                font-size: 1.6em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px 5px;
+            }
+
+            header {
+                padding: 20px 15px;
+            }
+
+            header h1 {
+                font-size: 1.7em;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>☕ Café & Bar </h1>
+            <p>Donde cada sorbo cuenta una historia</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="showSection('cafes')">☕ Cafés</button>
+            <button class="tab-button" onclick="showSection('bebidas')">🥤 Bebidas Frías</button>
+            <button class="tab-button" onclick="showSection('comidas')">🍔 Comidas</button>
+            <button class="tab-button" onclick="showSection('postres')">🍰 Postres</button>
+            <button class="tab-button" onclick="showSection('tragos')">🍹 Tragos</button>
+        </div>
+
+        <div class="content">
+            <!-- Sección Cafés -->
+            <div id="cafes" class="section active">
+                <h2 class="section-title">Cafés Calientes</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/cafe-expreso.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Espresso</div>
+                                <div class="menu-item-price">$800</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Café expreso intenso y aromático, preparado con granos selectos de origen italiano.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/capuchinojpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Cappuccino</div>
+                                <div class="menu-item-price">$1200</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Espresso con leche vaporizada y espuma cremosa, decorado con cacao.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/latte.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Latte</div>
+                                <div class="menu-item-price">$1300</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Espresso suave con abundante leche vaporizada y un toque de espuma.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/americano.jpeg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Americano</div>
+                                <div class="menu-item-price">$1000</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Espresso doble diluido en agua caliente, perfecto para disfrutar largo.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Bebidas Frías -->
+            <div id="bebidas" class="section">
+                <h2 class="section-title">Bebidas Frías</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/frappe de cafe.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Frappé de Café</div>
+                                <div class="menu-item-price">$1500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Café helado batido con hielo, leche y crema chantilly. Opción con o sin azúcar.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/smoothie de frutilla.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Smoothie de Frutilla</div>
+                                <div class="menu-item-price">$1600</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Batido natural de frutillas frescas, yogur y miel. Refrescante y nutritivo.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/limonada.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Limonada Natural</div>
+                                <div class="menu-item-price">$1100</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Limonada recién exprimida con menta fresca y hielo picado.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/iced-tea.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Té Helado</div>
+                                <div class="menu-item-price">$1000</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Té negro o verde helado con limón y hierbas aromáticas. Endulzado naturalmente.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Comidas -->
+            <div id="comidas" class="section">
+                <h2 class="section-title">Comidas</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/hambur.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Hamburguesa Clásica</div>
+                                <div class="menu-item-price">$3500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Carne 200g, lechuga, tomate, cebolla, queso cheddar y salsa especial. Con papas fritas.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/sand de pollo.png" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Sándwich de Pollo</div>
+                                <div class="menu-item-price">$3000</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Pollo grillado, lechuga, tomate, queso y mayonesa casera en pan árabe.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/Caesar-salad.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Ensalada César</div>
+                                <div class="menu-item-price">$2800</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Lechuga romana, pollo grillado, crutones, parmesano y aderezo césar.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/pizza-individual.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Pizza Individual</div>
+                                <div class="menu-item-price">$2500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Masa artesanal con mozzarella, salsa de tomate y tu elección de ingredientes.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Postres -->
+            <div id="postres" class="section">
+                <h2 class="section-title">Postres</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/cheesecake.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Cheesecake</div>
+                                <div class="menu-item-price">$1800</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Tarta de queso crema sobre base de galletas, con coulis de frutos rojos.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/brownies.png" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Brownie</div>
+                                <div class="menu-item-price">$1500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Brownie de chocolate belga con nueces, servido tibio con helado de vainilla.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/flancasero.png" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Flan Casero</div>
+                                <div class="menu-item-price">$1200</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Flan tradicional con caramelo casero y crema chantilly.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/Copa-helada-dulce-de-leche1-1.webp" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Copa Helada</div>
+                                <div class="menu-item-price">$1600</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Tres bochas de helado a elección, salsa de chocolate y crema. Con frutos secos.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección Tragos -->
+            <div id="tragos" class="section">
+                <h2 class="section-title">Tragos</h2>
+                <div class="menu-grid">
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/mojito.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Mojito</div>
+                                <div class="menu-item-price">$2500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Ron blanco, menta fresca, lima, azúcar y soda. Clásico refrescante cubano.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/receta-coctel-margarita.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Margarita</div>
+                                <div class="menu-item-price">$2600</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Tequila, triple sec, jugo de lima y sal en el borde. Opción frozen o on the rocks.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/cerveza.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Cerveza Artesanal</div>
+                                <div class="menu-item-price">$1800</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Selección de cervezas artesanales locales. IPA, Rubia o Roja.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="menu-item-image"><img src="./imagenes/vino.jpg" alt=""></div>
+                        <div class="menu-item-info">
+                            <div class="menu-item-header">
+                                <div class="menu-item-name">Copa de Vino</div>
+                                <div class="menu-item-price">$1500</div>
+                            </div>
+                            <div class="menu-item-description">
+                                Vinos tintos, blancos o rosados de bodegas seleccionadas. Copa de 150ml.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Desactivar todos los botones
+            const buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Mostrar la sección seleccionada
+            document.getElementById(sectionId).classList.add('active');
+
+            // Activar el botón correspondiente
+            event.target.classList.add('active');
+
+            // Hacer scroll suave hacia arriba
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
